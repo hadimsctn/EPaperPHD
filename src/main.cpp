@@ -23,6 +23,8 @@
 #include <GxEPD2_BW.h>
 // #include <GxEPD2_3C.h>
 #include <Fonts/FreeMonoBold9pt7b.h>
+#include <WiFi.h>
+#include <PubSubClient.h>
 
 // #define ESP32_C3
 #define ESP32_C3_SUPERMINI
@@ -67,13 +69,24 @@
 GxEPD2_BW<GxEPD2_290_BS, GxEPD2_290_BS::HEIGHT> display(GxEPD2_290_BS(SS, DC, RST, BUSY)); // DEPG0290BS 128x296, SSD1680
 // GxEPD2_3C<GxEPD2_290_C90c, GxEPD2_290_C90c::HEIGHT> display(GxEPD2_290_C90c(/*CS=5*/ SS, /*DC=*/ 1, /*RST=*/ 2, /*BUSY=*/ 3)); // GDEM029C90 128x296, SSD1680
 
+const char *ssid = "Trangbeo";          // Enter your WiFi name
+const char *password = "ngocctrang99@"; // Enter WiFi password
+const char *mqtt_broker = "broker.emqx.io";
+const char *topic = "esp32/test";
+const char *mqtt_username = "emqx";
+const char *mqtt_password = "public";
+const int mqtt_port = 1883;
+
+WiFiClient espClient;
+PubSubClient client(espClient);
+
 #define SpaceOfLine 5;
 const char MyName[] = "Nguyen Duc Tien z ts";
 const char MyEmail[] = "tiennd@soict.hust.edu.vn";
 const char MyHandphone[] = "Tel: 091-313-7399";
 const char MyOffice[] = "Adr: B1-801, SoICT";
 
-void HelloWorld()
+void HelloWorld(char *string)
 {
   display.setRotation(1);
   display.setFont(&FreeMonoBold9pt7b);
@@ -85,7 +98,7 @@ void HelloWorld()
   uint16_t tbh; /// Độ cao của dòng chữ
 
   // Trả về kích thước dòng chữ
-  display.getTextBounds(MyName + String(RST), 0, 0, &tbx, &tby, &tbw, &tbh);
+  display.getTextBounds(string + String(RST), 0, 0, &tbx, &tby, &tbw, &tbh);
   // Cột bắt đầu viết chữ
   uint16_t x = 0;
   // Dòng băt đầu viết chữ
@@ -102,7 +115,7 @@ void HelloWorld()
     /// Thiết lập điểm vẽ về vị trí trên trái
     display.setCursor(x, y);
     /// Hiển thị dòng chữ
-    display.print(MyName);
+    display.print(string);
     // Chuyển sang dòng tiếp theo và giãn dòng
     y = y + tbh + 2 * SpaceOfLine;
 
@@ -200,7 +213,7 @@ void helloFullScreenPartialMode()
 void showPartialUpdate()
 {
   // some useful background
-  HelloWorld();
+  //HelloWorld();
   // use asymmetric values for test
   uint16_t box_x = 10;
   uint16_t box_y = 15;
@@ -260,35 +273,65 @@ void showPartialUpdate()
     delay(1000);
   }
 }
-
+void callback(char *topic, byte *payload, unsigned int length)
+{
+  Serial.print("Message arrived in topic: ");
+  Serial.println(topic);
+  Serial.print("Message:");
+  char string[length + 1];
+  for (int i = 0; i < length; i++)
+  {
+    Serial.print((char)payload[i]);
+    string[i] = static_cast<char>(payload[i]);
+  }
+  string[length] = '\0';
+  HelloWorld(string);
+  
+  Serial.println();
+  Serial.println("-----------------------");
+}
 void setup()
 {
   pinMode(8, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
   Serial.begin(9600);
+  delay(10000);
+  // connecting to a WiFi network
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
+    Serial.println("Connecting to WiFi..");
+  }
+  Serial.println("Connected to the WiFi network");
   Serial.println("display.init");
   display.init(115200, true, 50, false);
   Serial.println("HelloWorld");
-  HelloWorld();
-  Serial.println("helloFullScreenPartialMode");
-  helloFullScreenPartialMode();
-  delay(1000);
-  if (display.epd2.hasFastPartialUpdate)
+  client.setServer(mqtt_broker, mqtt_port);
+  client.setCallback(callback);
+  while (!client.connected())
   {
-    showPartialUpdate();
-    delay(1000);
+    String client_id = "esp32-client-";
+    client_id += String(WiFi.macAddress());
+    Serial.printf("The client %s connects to the public mqtt broker\n", client_id.c_str());
+    if (client.connect(client_id.c_str(), mqtt_username, mqtt_password))
+    {
+      Serial.println("Public emqx mqtt broker connected");
+    }
+    else
+    {
+      Serial.print("failed with state ");
+      Serial.print(client.state());
+      delay(2000);
+    }
   }
-  Serial.println("HelloWorld2");
-  HelloWorld();
-  Serial.println("display");
+  client.subscribe(topic);
+  //HelloWorld();
   display.hibernate();
 }
 
 void loop()
 {
   // put your main code here, to run repeatedly:
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(1000);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(1000);
+  client.loop();
 }
