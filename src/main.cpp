@@ -69,10 +69,10 @@
 GxEPD2_BW<GxEPD2_290_BS, GxEPD2_290_BS::HEIGHT> display(GxEPD2_290_BS(SS, DC, RST, BUSY)); // DEPG0290BS 128x296, SSD1680
 // GxEPD2_3C<GxEPD2_290_C90c, GxEPD2_290_C90c::HEIGHT> display(GxEPD2_290_C90c(/*CS=5*/ SS, /*DC=*/ 1, /*RST=*/ 2, /*BUSY=*/ 3)); // GDEM029C90 128x296, SSD1680
 
-const char *ssid = "Trangbeo";          // Enter your WiFi name
-const char *password = "ngocctrang99@"; // Enter WiFi password
+const char *ssid = "HA HUYEN";          // Enter your WiFi name
+const char *password = "hopnguyen"; // Enter WiFi password
 const char *mqtt_broker = "broker.emqx.io";
-const char *topic = "esp32/test";
+const char *topic = "esp32/test/hello/vietnam";
 const char *mqtt_username = "emqx";
 const char *mqtt_password = "public";
 const int mqtt_port = 1883;
@@ -155,7 +155,7 @@ void HelloWorld(char *string)
   } while (display.nextPage());
 }
 
-void helloFullScreenPartialMode()
+void helloFullScreenPartialMode(char *string)
 {
   // Serial.println("helloFullScreenPartialMode");
   const char fullscreen[] = "full screen update";
@@ -187,21 +187,31 @@ void helloFullScreenPartialMode()
   // center update text
   display.getTextBounds(fullscreen, 0, 0, &tbx, &tby, &tbw, &tbh);
   uint16_t utx = ((display.width() - tbw) / 2) - tbx;
-  uint16_t uty = ((display.height() / 4) - tbh / 2) - tby;
+  uint16_t uty = ((display.height() / 4)- tbh/2) - tby;
+  Serial.println(tbx);
+  Serial.println(tby);
+  Serial.println(tbw);
+  Serial.println(tbh);
+  Serial.println(display.width());
+  Serial.println("test1");
   // center update mode
   display.getTextBounds(updatemode, 0, 0, &tbx, &tby, &tbw, &tbh);
   uint16_t umx = ((display.width() - tbw) / 2) - tbx;
   uint16_t umy = ((display.height() * 3 / 4) - tbh / 2) - tby;
+  Serial.println(tbx);
+  Serial.println(tby);
+  Serial.println(tbw);
+  Serial.println(tbh);
   // center MyName
-  display.getTextBounds(MyName, 0, 0, &tbx, &tby, &tbw, &tbh);
+  display.getTextBounds(string, 0, 0, &tbx, &tby, &tbw, &tbh);
   uint16_t hwx = ((display.width() - tbw) / 2) - tbx;
-  uint16_t hwy = ((display.height() - tbh) / 2) - tby;
+  uint16_t hwy = ((display.height() - tbh) /2) - tby;
   display.firstPage();
   do
   {
     display.fillScreen(GxEPD_WHITE);
     display.setCursor(hwx, hwy);
-    display.print(MyName);
+    display.print(string);
     display.setCursor(utx, uty);
     display.print(fullscreen);
     display.setCursor(umx, umy);
@@ -286,7 +296,8 @@ void callback(char *topic, byte *payload, unsigned int length)
   }
   string[length] = '\0';
   HelloWorld(string);
-  
+  delay(3000);
+  helloFullScreenPartialMode(string);
   Serial.println();
   Serial.println("-----------------------");
 }
