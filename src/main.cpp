@@ -23,8 +23,6 @@
 #include <GxEPD2_BW.h>
 // #include <GxEPD2_3C.h>
 #include <Fonts/FreeMonoBold9pt7b.h>
-#include <Fonts/FreeMono9pt7b.h>
-#include <Fonts/FreeSans9pt7b.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
 
@@ -71,13 +69,14 @@
 GxEPD2_BW<GxEPD2_290_BS, GxEPD2_290_BS::HEIGHT> display(GxEPD2_290_BS(SS, DC, RST, BUSY)); // DEPG0290BS 128x296, SSD1680
 // GxEPD2_3C<GxEPD2_290_C90c, GxEPD2_290_C90c::HEIGHT> display(GxEPD2_290_C90c(/*CS=5*/ SS, /*DC=*/ 1, /*RST=*/ 2, /*BUSY=*/ 3)); // GDEM029C90 128x296, SSD1680
 
-const char *ssid = "Trangbeo";          // Enter your WiFi name
-const char *password = "ngocctrang99@"; // Enter WiFi password
+const char *ssid = "Bún đậu";          // Enter your WiFi name
+const char *password = "phaicomamtom"; // Enter WiFi password
 const char *mqtt_broker = "broker.emqx.io";
-const char *topic = "esp32/test/hello/vietnam";
+const char *topic = "esp32/test/hello/vietnamhaha";
 const char *mqtt_username = "emqx";
 const char *mqtt_password = "public";
 const int mqtt_port = 1883;
+const char * tempMe="";
 const unsigned char gImage_ggg[] = { 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xa8, 
 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x54, 
 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xa8, 
@@ -212,10 +211,10 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 #define SpaceOfLine 5;
-const char MyName[] = "Nguyen Duc Ha";
-const char MyEmail[] = "ha.nd204739@sis.hust.edu.vn";
-const char MyHandphone[] = "Tel: 0865011858";
-const char MyOffice[] = "KTMT-03 K65";
+const char MyName[] = "Nguyen Duc Tien z ts";
+const char MyEmail[] = "tiennd@soict.hust.edu.vn";
+const char MyHandphone[] = "Tel: 091-313-7399";
+const char MyOffice[] = "Adr: B1-801, SoICT";
 
 void HelloWorld(char *string)
 {
@@ -285,40 +284,7 @@ void HelloWorld(char *string)
     y = y + tbh + SpaceOfLine;
   } while (display.nextPage());
 }
-void myInfo(){
-  display.setRotation(1);
-  display.setFont(&FreeSans9pt7b);
-  display.setTextColor(GxEPD_BLACK);
-  display.setFullWindow();
-  int16_t tbx;
-  int16_t tby;
-  uint16_t tbw;
-  uint16_t tbh;
-  uint16_t x = 0;
-  uint16_t y = 40;
-  display.firstPage();
-  do{
-    display.fillScreen(GxEPD_WHITE);
-    display.fillRect(0, 0, 86, 128, GxEPD_BLACK);
-    display.drawBitmap(0,0,gImage_ggg,86,128,GxEPD_WHITE);
-    display.getTextBounds(MyName,0,0,&tbx, &tby, &tbw, &tbh);
-    x = 87;
-    display.setCursor(x, y);
-    display.print(MyName);
-    y = y + tbh + SpaceOfLine;
-    
-    display.getTextBounds(MyHandphone,0,0,&tbx, &tby, &tbw, &tbh);
-    x = 87;
-    display.setCursor(x, y);
-    display.print(MyHandphone);
-    y = y + tbh + SpaceOfLine;
-    display.getTextBounds(MyOffice,0,0,&tbx, &tby, &tbw, &tbh);
-    x = 87;
-    display.setCursor(x, y);
-    display.print(MyOffice);
-  }
-  while (display.nextPage()); 
-}
+
 void helloFullScreenPartialMode(char *string)
 {
   // Serial.println("helloFullScreenPartialMode");
@@ -352,10 +318,7 @@ void helloFullScreenPartialMode(char *string)
   display.getTextBounds(fullscreen, 0, 0, &tbx, &tby, &tbw, &tbh);
   uint16_t utx = ((display.width() - tbw) / 2) - tbx;
   uint16_t uty = ((display.height() / 4)- tbh/2) - tby;
-  Serial.println(tbx);
-  Serial.println(tby);
-  Serial.println(tbw);
-  Serial.println(tbh);
+  Serial.println(display.height());
   Serial.println(display.width());
   Serial.println("test1");
   // center update mode
@@ -386,13 +349,14 @@ void helloFullScreenPartialMode(char *string)
 
 void showPartialUpdate()
 {
+  Serial.println("showPartialMode");
   // some useful background
   //HelloWorld();
   // use asymmetric values for test
   uint16_t box_x = 10;
   uint16_t box_y = 15;
   uint16_t box_w = 70;
-  uint16_t box_h = 20;
+  uint16_t box_h = 50;
   uint16_t cursor_y = box_y + box_h - 6;
   if (display.epd2.WIDTH < 104)
     cursor_y = box_y + 6;
@@ -446,6 +410,7 @@ void showPartialUpdate()
     } while (display.nextPage());
     delay(1000);
   }
+  Serial.println("Hehehe");
 }
 void callback(char *topic, byte *payload, unsigned int length)
 {
@@ -455,15 +420,33 @@ void callback(char *topic, byte *payload, unsigned int length)
   char string[length + 1];
   for (int i = 0; i < length; i++)
   {
-    Serial.print((char)payload[i]);
+    Serial.println("Get payload");
+    Serial.println((char)payload[i]);
     string[i] = static_cast<char>(payload[i]);
+    Serial.println("end payload");
+    Serial.println(payload[i]);
   }
   string[length] = '\0';
   HelloWorld(string);
   delay(3000);
-  helloFullScreenPartialMode(string);
+  //helloFullScreenPartialMode(string);
+  //showPartialUpdate();
+  //HelloWorld(string);
   Serial.println();
   Serial.println("-----------------------");
+}
+void callbackImage(char *topic, byte *payload, unsigned int length)
+{
+  Serial.print("Message arrived in topic: ");
+  // Serial.println(topic);
+  for (int i = 0; i < length; i++) {
+      Serial.println(payload[i]);
+  }
+  Serial.println(length);
+  display.drawBitmap(50,50,payload,1,1,GxEPD_BLACK,GxEPD_WHITE);
+  Serial.println();
+  Serial.println("-----------------------");
+  //if(==="sendImage")
 }
 void setup()
 {
@@ -473,8 +456,6 @@ void setup()
   delay(10000);
   // connecting to a WiFi network
   WiFi.begin(ssid, password);
-  display.setFullWindow();
-  display.firstPage();
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
@@ -486,6 +467,7 @@ void setup()
   Serial.println("HelloWorld");
   client.setServer(mqtt_broker, mqtt_port);
   client.setCallback(callback);
+  client.setBufferSize(5000);
   while (!client.connected())
   {
     String client_id = "esp32-client-";
@@ -504,7 +486,13 @@ void setup()
   }
   client.subscribe(topic);
   //HelloWorld();
-  myInfo();
+  display.setRotation(1);
+  display.setFont(&FreeMonoBold9pt7b);
+  display.setTextColor(GxEPD_BLACK);
+  display.drawBitmap(50,50,gImage_ggg,1,1,GxEPD_BLACK,GxEPD_WHITE);
+  int arraySize = sizeof(gImage_ggg) / sizeof(gImage_ggg[0]);
+  display.fillScreen(GxEPD_WHITE);
+  Serial.println(arraySize);
   display.hibernate();
 }
 
