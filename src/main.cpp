@@ -284,7 +284,40 @@ void HelloWorld(char *string)
     y = y + tbh + SpaceOfLine;
   } while (display.nextPage());
 }
-
+void myInfo(unsigned char *image){
+  display.setRotation(1);
+  display.setFont(&FreeSans9pt7b);
+  display.setTextColor(GxEPD_BLACK);
+  display.setFullWindow();
+  int16_t tbx;
+  int16_t tby;
+  uint16_t tbw;
+  uint16_t tbh;
+  uint16_t x = 0;
+  uint16_t y = 40;
+  display.firstPage();
+  do{
+    display.fillScreen(GxEPD_WHITE);
+    display.fillRect(0, 0, 237, 128, GxEPD_BLACK);
+    display.drawBitmap(0,0,image,237,128,GxEPD_WHITE);
+    //display.getTextBounds(MyName,0,0,&tbx, &tby, &tbw, &tbh);
+    // x = 87;
+    // display.setCursor(x, y);
+    // display.print(MyName);
+    // y = y + tbh + SpaceOfLine;
+    
+    // display.getTextBounds(MyHandphone,0,0,&tbx, &tby, &tbw, &tbh);
+    // x = 87;
+    // display.setCursor(x, y);
+    // display.print(MyHandphone);
+    // y = y + tbh + SpaceOfLine;
+    // display.getTextBounds(MyOffice,0,0,&tbx, &tby, &tbw, &tbh);
+    // x = 87;
+    // display.setCursor(x, y);
+    // display.print(MyOffice);
+  }
+  while (display.nextPage()); 
+}
 void helloFullScreenPartialMode(char *string)
 {
   // Serial.println("helloFullScreenPartialMode");
@@ -418,20 +451,17 @@ void callback(char *topic, byte *payload, unsigned int length)
   Serial.println(topic);
   Serial.print("Message:");
   char string[length + 1];
+  unsigned char image[length +1];
   for (int i = 0; i < length; i++)
   {
-    Serial.println("Get payload");
-    Serial.println((char)payload[i]);
-    string[i] = static_cast<char>(payload[i]);
-    Serial.println("end payload");
-    Serial.println(payload[i]);
+    //.print((char)payload[i]);
+    image[i] = static_cast<unsigned char>(payload[i]);
   }
   string[length] = '\0';
-  HelloWorld(string);
-  delay(3000);
-  //helloFullScreenPartialMode(string);
-  //showPartialUpdate();
-  //HelloWorld(string);
+  myInfo(image);
+  // HelloWorld(string);
+  // delay(3000);
+  // helloFullScreenPartialMode(string);
   Serial.println();
   Serial.println("-----------------------");
 }
@@ -486,13 +516,7 @@ void setup()
   }
   client.subscribe(topic);
   //HelloWorld();
-  display.setRotation(1);
-  display.setFont(&FreeMonoBold9pt7b);
-  display.setTextColor(GxEPD_BLACK);
-  display.drawBitmap(50,50,gImage_ggg,1,1,GxEPD_BLACK,GxEPD_WHITE);
-  int arraySize = sizeof(gImage_ggg) / sizeof(gImage_ggg[0]);
-  display.fillScreen(GxEPD_WHITE);
-  Serial.println(arraySize);
+  //myInfo();
   display.hibernate();
 }
 
