@@ -359,6 +359,19 @@ void callback(char *topic, byte *payload, unsigned int length)
   Serial.println();
   Serial.println("-----------------------");
 }
+void callbackImage(char *topic, byte *payload, unsigned int length)
+{
+  Serial.print("Message arrived in topic: ");
+  // Serial.println(topic);
+  for (int i = 0; i < length; i++) {
+      Serial.println(payload[i]);
+  }
+  Serial.println(length);
+  display.drawBitmap(50,50,payload,1,1,GxEPD_BLACK,GxEPD_WHITE);
+  Serial.println();
+  Serial.println("-----------------------");
+  //if(==="sendImage")
+}
 void setup()
 {
   pinMode(8, OUTPUT);
