@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "x3Gmi+sGuTJVFj98YF6AXT0jG2NNVvNCxvFpEzSTaKQ=",
+  "Source": "EpaperWebApi",
+  "BasePath": "_content/EpaperWebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
