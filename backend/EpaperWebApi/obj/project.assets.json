@@ -88,6 +88,16 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "EpaperPHDModel/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/EpaperPHDModel.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EpaperPHDModel.dll": {}
+        }
       }
     }
   },
@@ -216,10 +226,16 @@
         "swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
+    },
+    "EpaperPHDModel/1.0.0": {
+      "type": "project",
+      "path": "../EpaperPHDModel/EpaperPHDModel.csproj",
+      "msbuildProject": "../EpaperPHDModel/EpaperPHDModel.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "EpaperPHDModel >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.2.3"
     ]
   },
@@ -256,7 +272,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Personal\\Project 3\\EPaperPHD\\backend\\EpaperPHDModel\\EpaperPHDModel.csproj": {
+              "projectPath": "D:\\Personal\\Project 3\\EPaperPHD\\backend\\EpaperPHDModel\\EpaperPHDModel.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
