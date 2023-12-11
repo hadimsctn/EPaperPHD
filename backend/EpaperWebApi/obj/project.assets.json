@@ -98,6 +98,26 @@
         "runtime": {
           "bin/placeholder/EpaperPHDModel.dll": {}
         }
+      },
+      "EpaperPHDService/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/EpaperPHDService.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EpaperPHDService.dll": {}
+        }
+      },
+      "EpaperPHDService.Intention/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/EpaperPHDService.Intention.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EpaperPHDService.Intention.dll": {}
+        }
       }
     }
   },
@@ -231,11 +251,23 @@
       "type": "project",
       "path": "../EpaperPHDModel/EpaperPHDModel.csproj",
       "msbuildProject": "../EpaperPHDModel/EpaperPHDModel.csproj"
+    },
+    "EpaperPHDService/1.0.0": {
+      "type": "project",
+      "path": "../EpaperPHDService/EpaperPHDService.csproj",
+      "msbuildProject": "../EpaperPHDService/EpaperPHDService.csproj"
+    },
+    "EpaperPHDService.Intention/1.0.0": {
+      "type": "project",
+      "path": "../EpaperPHDService.Intention/EpaperPHDService.Intention.csproj",
+      "msbuildProject": "../EpaperPHDService.Intention/EpaperPHDService.Intention.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "EpaperPHDModel >= 1.0.0",
+      "EpaperPHDService >= 1.0.0",
+      "EpaperPHDService.Intention >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.2.3"
     ]
   },
@@ -275,6 +307,12 @@
           "projectReferences": {
             "D:\\Personal\\Project 3\\EPaperPHD\\backend\\EpaperPHDModel\\EpaperPHDModel.csproj": {
               "projectPath": "D:\\Personal\\Project 3\\EPaperPHD\\backend\\EpaperPHDModel\\EpaperPHDModel.csproj"
+            },
+            "D:\\Personal\\Project 3\\EPaperPHD\\backend\\EpaperPHDService.Intention\\EpaperPHDService.Intention.csproj": {
+              "projectPath": "D:\\Personal\\Project 3\\EPaperPHD\\backend\\EpaperPHDService.Intention\\EpaperPHDService.Intention.csproj"
+            },
+            "D:\\Personal\\Project 3\\EPaperPHD\\backend\\EpaperPHDService\\EpaperPHDService.csproj": {
+              "projectPath": "D:\\Personal\\Project 3\\EPaperPHD\\backend\\EpaperPHDService\\EpaperPHDService.csproj"
             }
           }
         }
