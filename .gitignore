@@ -9,3 +9,4 @@
 *.vs
 .bin/
 .obj/
+/backend/EpaperWebApi/obj/Debug/net6.0
