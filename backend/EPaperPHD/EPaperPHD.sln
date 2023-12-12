@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPaperPHD", "EPaperPHD\EPaperPHD.csproj", "{10B4BFBA-9C98-400D-B982-DE28FC29C408}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPaperPHD.Web", "EPaperPHD\EPaperPHD.Web.csproj", "{10B4BFBA-9C98-400D-B982-DE28FC29C408}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPaperPHD.Model", "EPaperPHD.Model\EPaperPHD.Model.csproj", "{166B3808-B970-405B-8396-B89FBFE931DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPaperPHD.Service", "EPaperPHD.Service\EPaperPHD.Service.csproj", "{CDDFF348-9556-4C09-BB82-5C3960DDECA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPaperPHD.Service.Intention", "EPaperPHD.Service.Intention\EPaperPHD.Service.Intention.csproj", "{23F562DC-5439-4627-9CF0-D21B85664CF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPaperPHD.Entity", "EPaperPHD.Entity\EPaperPHD.Entity.csproj", "{85A61BFF-1C73-49DA-B8AF-CF8BA8EA8724}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPaperPHD.StartUp", "EPaperPHD.StartUp\EPaperPHD.StartUp.csproj", "{14BBE152-C7A1-4CC1-90FC-C52CD514A9F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +25,26 @@ Global
 		{10B4BFBA-9C98-400D-B982-DE28FC29C408}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10B4BFBA-9C98-400D-B982-DE28FC29C408}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10B4BFBA-9C98-400D-B982-DE28FC29C408}.Release|Any CPU.Build.0 = Release|Any CPU
+		{166B3808-B970-405B-8396-B89FBFE931DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{166B3808-B970-405B-8396-B89FBFE931DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{166B3808-B970-405B-8396-B89FBFE931DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{166B3808-B970-405B-8396-B89FBFE931DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDDFF348-9556-4C09-BB82-5C3960DDECA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDDFF348-9556-4C09-BB82-5C3960DDECA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDDFF348-9556-4C09-BB82-5C3960DDECA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDDFF348-9556-4C09-BB82-5C3960DDECA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23F562DC-5439-4627-9CF0-D21B85664CF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23F562DC-5439-4627-9CF0-D21B85664CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23F562DC-5439-4627-9CF0-D21B85664CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23F562DC-5439-4627-9CF0-D21B85664CF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85A61BFF-1C73-49DA-B8AF-CF8BA8EA8724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85A61BFF-1C73-49DA-B8AF-CF8BA8EA8724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85A61BFF-1C73-49DA-B8AF-CF8BA8EA8724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85A61BFF-1C73-49DA-B8AF-CF8BA8EA8724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14BBE152-C7A1-4CC1-90FC-C52CD514A9F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14BBE152-C7A1-4CC1-90FC-C52CD514A9F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14BBE152-C7A1-4CC1-90FC-C52CD514A9F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14BBE152-C7A1-4CC1-90FC-C52CD514A9F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
