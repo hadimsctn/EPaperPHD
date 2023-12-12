@@ -1,3 +1,4 @@
+﻿using EPaperPHD.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EPaperPHD.Controllers
@@ -28,6 +29,28 @@ namespace EPaperPHD.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+        [HttpPost(Name = "GetWeather")]
+        public IActionResult GetFolders()
+        {
+            // Tạo cấu trúc thư mục
+            Folder rootFolder = new Folder("Root");
+
+            for (int i = 1; i <= 3; i++)
+            {
+                Folder subfolder = new Folder($"Subfolder {i}");
+
+                for (int j = 1; j <= 3; j++)
+                {
+                    Folder nestedSubfolder = new Folder($"Nested Subfolder {i}.{j}");
+                    subfolder.Subfolders.Add(nestedSubfolder);
+                }
+
+                rootFolder.Subfolders.Add(subfolder);
+            }
+
+            // Trả về dữ liệu JSON
+            return Ok(rootFolder);
         }
     }
 }
