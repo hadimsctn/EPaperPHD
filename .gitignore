@@ -31,19 +31,19 @@ msbuild.wrn
 /appsettings.Development.json
 /publishapi.bat
 /publishtimer.bat
-backend/EPaper/logs/*
+backend/EPaperPHD/logs/*
 
 # ignore development configuration
-backend/EPaper/appsettings.Development.json
-backend/EPaper/appsettings.Production.json
+backend/EPaperPHD/appsettings.Development.json
+backend/EPaperPHD/appsettings.Production.json
 editorconfig
 *.pubxml
 *profile.arm.json
-backend/EPaper/.config/*
+backend/EPaperPHD/.config/*
 
 # ignore unit test config files.
 *.bat
-backend/EPaper/TestResults/
+backend/EPaperPHD/TestResults/
 coveragereport/
 Codes/.vscode/
 *.http
