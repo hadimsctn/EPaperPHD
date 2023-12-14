@@ -1,4 +1,4 @@
-﻿namespace EPaperPHD.Model
+﻿namespace EPaperPHD.Model.Test
 {
     public class Folder
     {

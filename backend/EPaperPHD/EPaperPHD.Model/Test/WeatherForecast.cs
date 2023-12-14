@@ -1,4 +1,4 @@
-namespace EPaperPHD
+namespace EPaperPHD.Model.Test
 {
     public class WeatherForecast
     {

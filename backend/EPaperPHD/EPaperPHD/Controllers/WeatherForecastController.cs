@@ -1,4 +1,4 @@
-﻿using EPaperPHD.Model;
+﻿using EPaperPHD.Model.Test;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EPaperPHD.Controllers

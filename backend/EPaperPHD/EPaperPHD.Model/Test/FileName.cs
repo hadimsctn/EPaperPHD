@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EPaperPHD.Model
+namespace EPaperPHD.Model.Test
 {
     public class FileName
     {
-        public Folder? Folder { get; set; } 
+        public Folder? Folder { get; set; }
     }
 }
