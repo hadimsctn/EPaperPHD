@@ -11,7 +11,9 @@ namespace EPaperPHD.StartUp.BuilderExtensions
     {
         public static WebApplicationBuilder SetupBuilder(this WebApplicationBuilder builder)
         {
-            builder.AddConfigurationService();
+            builder
+                .AddConfigurationService()
+                .AddServices();
             return builder;
         }
     }

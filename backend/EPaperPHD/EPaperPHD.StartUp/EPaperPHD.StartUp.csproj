@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EPaperPHD.Model\EPaperPHD.Model.csproj" />
+    <ProjectReference Include="..\EPaperPHD.Service\EPaperPHD.Service.csproj" />
   </ItemGroup>
 
 </Project>

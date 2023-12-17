@@ -2,13 +2,11 @@ using EPaperPHD.StartUp.BuilderExtensions;
 using EPaperPHD.Service;
 using MQTTnet.Client;
 
-var builder = WebApplication.CreateBuilder(args).SetupBuilder();
+var builder = WebApplication.CreateBuilder(args).SetupBuilder().SetupBuilder();
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddHostedService<ListeningService>();
-builder.Services.AddSingleton<IMqttClient, MqttClient>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
