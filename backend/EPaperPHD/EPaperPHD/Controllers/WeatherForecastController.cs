@@ -1,5 +1,7 @@
 ﻿using EPaperPHD.Model.Test;
+using EPaperPHD.Service.MqttServer;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace EPaperPHD.Controllers
 {
@@ -13,15 +15,17 @@ namespace EPaperPHD.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IMqttServerService mqttServerService;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger,IMqttServerService mqttServerService)
         {
             _logger = logger;
+            this.mqttServerService = mqttServerService;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
-        {
+        { 
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
@@ -29,6 +33,7 @@ namespace EPaperPHD.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+
         }
         [HttpPost(Name = "GetWeather")]
         public IActionResult GetFolders()
@@ -48,7 +53,7 @@ namespace EPaperPHD.Controllers
 
                 rootFolder.Subfolders.Add(subfolder);
             }
-
+            var result = mqttServerService.PublishToMqttServer(UTF8Encoding.UTF8.GetBytes(DateTime.Now.ToString("yyyyMMdd")), "esp32/test/hello/vietnamhaha/dateofbirth", "broker.hivemq.com", 1883);
             // Trả về dữ liệu JSON
             return Ok(rootFolder);
         }

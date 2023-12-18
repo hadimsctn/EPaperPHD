@@ -69,8 +69,8 @@
 GxEPD2_BW<GxEPD2_290_BS, GxEPD2_290_BS::HEIGHT> display(GxEPD2_290_BS(SS, DC, RST, BUSY)); // DEPG0290BS 128x296, SSD1680
 // GxEPD2_3C<GxEPD2_290_C90c, GxEPD2_290_C90c::HEIGHT> display(GxEPD2_290_C90c(/*CS=5*/ SS, /*DC=*/ 1, /*RST=*/ 2, /*BUSY=*/ 3)); // GDEM029C90 128x296, SSD1680
 
-const char *ssid = "Bún đậu";          // Enter your WiFi name
-const char *password = "phaicomamtom"; // Enter WiFi password
+const char *ssid = "Trangbeo";          // Enter your WiFi name
+const char *password = "ngocctrang99@"; // Enter WiFi password
 const char *mqtt_broker = "broker.hivemq.com";
 const char *topicImage = "esp32/test/hello/vietnamhaha/image";
 const char *topicMajor = "esp32/test/hello/vietnamhaha/Class";
@@ -390,7 +390,7 @@ void setup()
   display.init(115200, true, 50, false);
   client.setServer(mqtt_broker, mqtt_port);
   client.setCallback(callback);
-  client.setBufferSize(5000);
+  client.setBufferSize(8192);
   while (!client.connected())
   {
     String client_id = "esp32-client-";
@@ -408,13 +408,9 @@ void setup()
     }
   }
   myInfo();
-  updateName("Nguyen Duc Ha");
-  updateImage(imageInformationAyaka);
-  client.subscribe(topicImage);
-  client.subscribe(topicDateOfBirth);
   client.subscribe(topicMajor);
-  client.subscribe(topicName);
-  client.subscribe(topicMajor1);
+  client.publish(topicMajor, "Dcm cuoc doi");
+  Serial.println(client.getBufferSize());
   display.hibernate();
 }
 

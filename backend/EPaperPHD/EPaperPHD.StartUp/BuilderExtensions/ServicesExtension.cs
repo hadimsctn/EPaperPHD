@@ -1,4 +1,5 @@
 ﻿using EPaperPHD.Service;
+using EPaperPHD.Service.MqttServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,6 +17,7 @@ namespace EPaperPHD.StartUp.BuilderExtensions
         private static WebApplicationBuilder AddLogicServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddHostedService<ListeningService>();
+            builder.Services.AddScoped<IMqttServerService, MqttServerService>();
             return builder;
         }
     }
