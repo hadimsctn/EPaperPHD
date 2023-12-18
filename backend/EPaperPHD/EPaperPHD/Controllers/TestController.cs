@@ -17,7 +17,7 @@ namespace EPaperPHD.Web.Controllers
         [HttpPost, Route("TestController/publisher")]
         public async Task<bool> PublishDatatoMQTTServer()
         {
-            return await mqttServerService.PublishToMqttServer(UTF8Encoding.UTF8.GetBytes(DateTime.Now.ToString("yyyyMMdd")), "esp32/test/hello/vietnamhaha/Class", "broker.hivemq.com", 1883);
+            return await mqttServerService.PublishToMqttServer(UTF8Encoding.UTF8.GetBytes("Quang Thanh Dat"), "EpaperPHD/UpdateName", "broker.hivemq.com", 1883);
         }
     }
 }

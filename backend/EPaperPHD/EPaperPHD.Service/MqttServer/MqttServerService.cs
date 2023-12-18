@@ -12,19 +12,21 @@ namespace EPaperPHD.Service.MqttServer
 {
     public class MqttServerService : IMqttServerService
     {
-        public MqttServerService()
+        private readonly ILogger<MqttServerService> logger;
+        public MqttServerService(ILogger<MqttServerService> logger)
         {
-            
+            this.logger = logger;
         }
         public async Task<bool> PublishToMqttServer(byte[] bytes, string topic, string broker, double port)
         {
             try
             {
+                logger.LogInformation("Start publish data to Mqtt Server");
                 var mqttFactory = new MqttFactory();
                 IMqttClient client = mqttFactory.CreateMqttClient();
                 var options = new MqttClientOptionsBuilder()
-                .WithClientId("2023")
-                .WithTcpServer(broker, ((int)port))
+                .WithClientId(Guid.NewGuid().ToString())
+                .WithTcpServer(broker, (int)port)
                     .WithCleanSession()
                     .Build();
                 var connectResult = await client.ConnectAsync(options);
@@ -36,21 +38,9 @@ namespace EPaperPHD.Service.MqttServer
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                logger.LogError(ex.ToString());
             }
             return true;
-        }
-        public async Task<string> SubcribeMqttServer()
-        {
-            var mqttFactory = new MqttFactory();
-            IMqttClient client = mqttFactory.CreateMqttClient();
-            var options = new MqttClientOptionsBuilder()
-            .WithClientId("2023")
-            .WithTcpServer("broker.hivemq.com", 1883)
-                .WithCleanSession()
-                .Build();
-            var connectResult = await client.ConnectAsync(options);
-            if (connectResult.ResultCode == MqttClientConnectResultCode.Success) { }
         }
     }
 }
