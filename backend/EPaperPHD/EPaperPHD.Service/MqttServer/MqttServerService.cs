@@ -18,7 +18,7 @@ namespace EPaperPHD.Service.MqttServer
         {
             this.logger = logger;
         }
-        public async Task<bool> PublishToMqttServer(byte[] bytes, string topic, string broker, double port)
+        public async Task<bool> PublishToMqttServer(object data,string topic, string broker, double port)
         {
             try
             {
@@ -31,14 +31,9 @@ namespace EPaperPHD.Service.MqttServer
                     .WithCleanSession()
                     .Build();
                 var connectResult = await client.ConnectAsync(options);
-                var dataObject = new
-                {
-                    sensor = "temperature",
-                    value = 25.5
-                };
 
                 // Chuyển đối tượng thành JSON
-                var jsonData = JsonConvert.SerializeObject(dataObject);
+                var jsonData = JsonConvert.SerializeObject(data);
 
                 var applicationMessage = new MqttApplicationMessageBuilder()
                 .WithTopic(topic)

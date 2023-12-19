@@ -70,8 +70,8 @@
 GxEPD2_BW<GxEPD2_290_BS, GxEPD2_290_BS::HEIGHT> display(GxEPD2_290_BS(SS, DC, RST, BUSY)); // DEPG0290BS 128x296, SSD1680
 // GxEPD2_3C<GxEPD2_290_C90c, GxEPD2_290_C90c::HEIGHT> display(GxEPD2_290_C90c(/*CS=5*/ SS, /*DC=*/ 1, /*RST=*/ 2, /*BUSY=*/ 3)); // GDEM029C90 128x296, SSD1680
 
-const char *ssid = "Trangbeo";          // Enter your WiFi name
-const char *password = "ngocctrang99@"; // Enter WiFi password
+const char *ssid = "AvePoint-Mobile";          // Enter your WiFi name
+const char *password = "AvePointM0bile"; // Enter WiFi password
 const char *mqtt_broker = "broker.hivemq.com";
 const char *topicGetDefaultData = "EpaperPHD/UpdateAll";
 const char *topicImage = "EpaperPHD/UpdateImage";
