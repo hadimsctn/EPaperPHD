@@ -25,6 +25,7 @@
 #include <Fonts/FreeMonoBold9pt7b.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
+#include <ArduinoJson.h>
 
 // #define ESP32_C3
 #define ESP32_C3_SUPERMINI
@@ -69,8 +70,8 @@
 GxEPD2_BW<GxEPD2_290_BS, GxEPD2_290_BS::HEIGHT> display(GxEPD2_290_BS(SS, DC, RST, BUSY)); // DEPG0290BS 128x296, SSD1680
 // GxEPD2_3C<GxEPD2_290_C90c, GxEPD2_290_C90c::HEIGHT> display(GxEPD2_290_C90c(/*CS=5*/ SS, /*DC=*/ 1, /*RST=*/ 2, /*BUSY=*/ 3)); // GDEM029C90 128x296, SSD1680
 
-const char *ssid = "Bún đậu";          // Enter your WiFi name
-const char *password = "phaicomamtom"; // Enter WiFi password
+const char *ssid = "Trangbeo";          // Enter your WiFi name
+const char *password = "ngocctrang99@"; // Enter WiFi password
 const char *mqtt_broker = "broker.hivemq.com";
 const char *topicGetDefaultData = "EpaperPHD/UpdateAll";
 const char *topicImage = "EpaperPHD/UpdateImage";
@@ -245,29 +246,50 @@ void updateDateOfBirth(String dateOfBirth)
   myInfo();
 }
 
+
+void parseJsonPayload(String jsonStr,int size) {
+  DynamicJsonDocument doc(8192); // Kích thước đối tượng JSON tương ứng với payload
+
+  // Phân tích chuỗi JSON
+  deserializeJson(doc, jsonStr);
+
+  // Trích xuất giá trị từ các trường JSON
+  const char* sensorType = doc["sensor"];
+  float sensorValue = doc["value"];
+
+  // Xử lý dữ liệu
+  Serial.print("Sensor Type: ");
+  Serial.println(sensorType);
+  Serial.print("Sensor Value: ");
+  Serial.println(sensorValue);
+}
+
 void callback(char *topic, byte *payload, unsigned int length)
 {
   Serial.print("Message arrived in topic: ");
   Serial.println(topic);
-  if(topic == topicDateOfBirth){
-    String dateOfBirth= "";
+  Serial.println(topicName);
+  Serial.println(topicName == topic);
+  if (strcmp(topic, topicDateOfBirth) == 0)
+  {
+    String dateOfBirth = "";
     for (int i = 0; i < length; i++)
     {
-      dateOfBirth = dateOfBirth+(char)payload[i];
+      dateOfBirth = dateOfBirth + (char)payload[i];
     }
-    updateName(dateOfBirth);
+    updateDateOfBirth(dateOfBirth);
   }
-  if (topic == "EpaperPHD/UpdateName")
+  if (strcmp(topic, topicName) == 0)
   {
     String name = "";
     for (int i = 0; i < length; i++)
     {
-      name = name+(char)payload[i];
+      name = name + (char)payload[i];
     }
     Serial.println(name);
     updateName(name);
   }
-  if (topic == topicImage)
+  if (strcmp(topic, topicImage) == 0)
   {
     unsigned char image[length + 1];
     for (int i = 0; i < length; i++)
@@ -276,9 +298,19 @@ void callback(char *topic, byte *payload, unsigned int length)
     }
     updateImage(image);
   }
-  char string[length + 1];
-
-  string[length] = '\0';
+  if (strcmp(topic, topicGetDefaultData) == 0)
+  {
+    String name = "";
+    for (int i = 0; i < length; i++)
+    {
+      name = name + (char)payload[i];
+    }
+    Serial.println(length);
+    Serial.println(name);
+    payload[length] = '\0';
+    String jsonStr = String((char *)payload);
+    parseJsonPayload(jsonStr,length);
+  }
   Serial.println();
   Serial.println("-----------------------");
 }
@@ -318,6 +350,7 @@ void setup()
       delay(2000);
     }
   }
+  client.subscribe(topicGetDefaultData);
   client.subscribe(topicDateOfBirth);
   client.subscribe(topicName);
   client.subscribe(topicImage);

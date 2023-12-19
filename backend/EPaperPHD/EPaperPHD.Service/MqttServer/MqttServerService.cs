@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using MQTTnet;
 using MQTTnet.Client;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +31,18 @@ namespace EPaperPHD.Service.MqttServer
                     .WithCleanSession()
                     .Build();
                 var connectResult = await client.ConnectAsync(options);
+                var dataObject = new
+                {
+                    sensor = "temperature",
+                    value = 25.5
+                };
+
+                // Chuyển đối tượng thành JSON
+                var jsonData = JsonConvert.SerializeObject(dataObject);
+
                 var applicationMessage = new MqttApplicationMessageBuilder()
                 .WithTopic(topic)
-                .WithPayload(bytes)
+                .WithPayload(Encoding.UTF8.GetBytes(jsonData))
                 .Build();
                 await client.PublishAsync(applicationMessage, CancellationToken.None);
             }
