@@ -1,5 +1,6 @@
 ﻿using EPaperPHD.Model.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client;
 using Newtonsoft.Json;
@@ -14,11 +15,13 @@ namespace EPaperPHD.Service.MqttServer
     public class MqttServerService : IMqttServerService
     {
         private readonly ILogger<MqttServerService> logger;
-        public MqttServerService(ILogger<MqttServerService> logger)
+        private readonly MqttConfiguration mqttConfiguration;
+        public MqttServerService(ILogger<MqttServerService> logger, IOptionsMonitor<MqttConfiguration> mqttConfiguration)
         {
             this.logger = logger;
+            this.mqttConfiguration = mqttConfiguration.CurrentValue;
         }
-        public async Task<bool> PublishToMqttServer(object data,string topic, string broker, double port)
+        public async Task<bool> PublishToMqttServer(object data,string topic)
         {
             try
             {
@@ -27,7 +30,7 @@ namespace EPaperPHD.Service.MqttServer
                 IMqttClient client = mqttFactory.CreateMqttClient();
                 var options = new MqttClientOptionsBuilder()
                 .WithClientId(Guid.NewGuid().ToString())
-                .WithTcpServer(broker, (int)port)
+                .WithTcpServer(mqttConfiguration.Broker, mqttConfiguration.Port)
                     .WithCleanSession()
                     .Build();
                 var connectResult = await client.ConnectAsync(options);
