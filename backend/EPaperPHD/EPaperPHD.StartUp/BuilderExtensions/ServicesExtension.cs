@@ -1,4 +1,5 @@
 ﻿using EPaperPHD.Service;
+using EPaperPHD.Service.Intention;
 using EPaperPHD.Service.MqttServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,7 @@ namespace EPaperPHD.StartUp.BuilderExtensions
         {
             builder.Services.AddHostedService<ListeningService>();
             builder.Services.AddScoped<IMqttServerService, MqttServerService>();
+            builder.Services.AddScoped<IUpdateDataService, UpdateDataService>();
             return builder;
         }
     }

@@ -35,7 +35,7 @@ namespace EPaperPHD.Service
                 if (connectResult.ResultCode == MqttClientConnectResultCode.Success)
                 {
                     logger.LogInformation("Connected mqtt Server");
-                    await client.SubscribeAsync("EpaperPHD/UpdateAll");
+                    await client.SubscribeAsync("EpaperPHD/UpdateMajor");
 
                     // Callback function when a message is received
                     client.ApplicationMessageReceivedAsync += e =>

@@ -26,6 +26,7 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
+#include <update.h>
 
 // #define ESP32_C3
 #define ESP32_C3_SUPERMINI
@@ -70,7 +71,7 @@
 GxEPD2_BW<GxEPD2_290_BS, GxEPD2_290_BS::HEIGHT> display(GxEPD2_290_BS(SS, DC, RST, BUSY)); // DEPG0290BS 128x296, SSD1680
 // GxEPD2_3C<GxEPD2_290_C90c, GxEPD2_290_C90c::HEIGHT> display(GxEPD2_290_C90c(/*CS=5*/ SS, /*DC=*/ 1, /*RST=*/ 2, /*BUSY=*/ 3)); // GDEM029C90 128x296, SSD1680
 
-const char *ssid = "AvePoint-Mobile";          // Enter your WiFi name
+const char *ssid = "AvePoint-Mobile";    // Enter your WiFi name
 const char *password = "AvePointM0bile"; // Enter WiFi password
 const char *mqtt_broker = "broker.hivemq.com";
 const char *topicGetDefaultData = "EpaperPHD/UpdateAll";
@@ -90,7 +91,7 @@ const char *studentInformation = "STUDENT INFORMATION";
 String nameDefault = "Full Name";
 String majorDefault = "Major";
 String dateOfBirthDefault = "Date of Birth";
-String major1Default = "Major code";
+String classDefault = "Major code";
 unsigned char imageInformationDefault[] = {
     0x55, 0x55, 0x55, 0x56, 0xdb, 0x6d, 0xb6, 0xdb, 0x6d,
     0x48, 0x88, 0x92, 0x27, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -213,7 +214,7 @@ void myInfo()
     display.setCursor(six, 15);
     display.print(studentInformation);
     display.setCursor(x, y);
-    display.print(major1Default);
+    display.print(classDefault);
     y = y - 15 - SpaceOfLine;
     display.setCursor(x, y);
     display.print(majorDefault);
@@ -246,48 +247,134 @@ void updateDateOfBirth(String dateOfBirth)
   myInfo();
 }
 
+void updateClass(String Class)
+{
+  Serial.println("Start update class");
+  classDefault = Class;
+  myInfo();
+}
+void updateMajor(String major)
+{
+  Serial.println("Start update class");
+  majorDefault = major;
+  myInfo();
+}
 
-void parseJsonPayload(String jsonStr,int size) {
+void parseJsonPayloadUpdateName(String jsonStr)
+{
   DynamicJsonDocument doc(8192); // Kích thước đối tượng JSON tương ứng với payload
 
   // Phân tích chuỗi JSON
   deserializeJson(doc, jsonStr);
 
   // Trích xuất giá trị từ các trường JSON
-  const char* sensorType = doc["sensor"];
-  float sensorValue = doc["value"];
+  const char *idDevice = doc["IdDevice"];
 
   // Xử lý dữ liệu
-  Serial.print("Sensor Type: ");
-  Serial.println(sensorType);
-  Serial.print("Sensor Value: ");
-  Serial.println(sensorValue);
+  if (strcmp(idDevice, "string") == 0)
+  {
+    JsonArray data = doc["Data"];
+    for (JsonObject obj : data)
+    {
+      const char *name = obj["Name"];
+      updateName(String(name));
+    }
+  }
+}
+
+void parseJsonPayloadUpdateDateOfBirth(String jsonStr)
+{
+  DynamicJsonDocument doc(8192); // Kích thước đối tượng JSON tương ứng với payload
+
+  // Phân tích chuỗi JSON
+  deserializeJson(doc, jsonStr);
+
+  // Trích xuất giá trị từ các trường JSON
+  const char *idDevice = doc["IdDevice"];
+
+  // Xử lý dữ liệu
+  if (strcmp(idDevice, "string") == 0)
+  {
+    JsonArray data = doc["Data"];
+    for (JsonObject obj : data)
+    {
+      const char *dateOfBirth = obj["DateOfBirth"];
+      updateDateOfBirth(String(dateOfBirth));
+    }
+  }
+}
+
+void parseJsonPayloadUpdateClass(String jsonStr)
+{
+  DynamicJsonDocument doc(8192); // Kích thước đối tượng JSON tương ứng với payload
+
+  // Phân tích chuỗi JSON
+  deserializeJson(doc, jsonStr);
+
+  // Trích xuất giá trị từ các trường JSON
+  const char *idDevice = doc["IdDevice"];
+
+  // Xử lý dữ liệu
+  if (strcmp(idDevice, "string") == 0)
+  {
+    JsonArray data = doc["Data"];
+    for (JsonObject obj : data)
+    {
+      const char *Class = obj["Class"];
+      updateClass(String(Class));
+    }
+  }
+}
+
+void parseJsonPayloadUpdateMajor(String jsonStr)
+{
+  DynamicJsonDocument doc(8192); // Kích thước đối tượng JSON tương ứng với payload
+
+  // Phân tích chuỗi JSON
+  deserializeJson(doc, jsonStr);
+
+  // Trích xuất giá trị từ các trường JSON
+  const char *idDevice = doc["IdDevice"];
+
+  // Xử lý dữ liệu
+  if (strcmp(idDevice, "string") == 0)
+  {
+    JsonArray data = doc["Data"];
+    for (JsonObject obj : data)
+    {
+      const char *major = obj["Major"];
+      updateMajor(String(major));
+    }
+  }
 }
 
 void callback(char *topic, byte *payload, unsigned int length)
 {
   Serial.print("Message arrived in topic: ");
   Serial.println(topic);
-  Serial.println(topicName);
-  Serial.println(topicName == topic);
   if (strcmp(topic, topicDateOfBirth) == 0)
   {
-    String dateOfBirth = "";
-    for (int i = 0; i < length; i++)
-    {
-      dateOfBirth = dateOfBirth + (char)payload[i];
-    }
-    updateDateOfBirth(dateOfBirth);
+    payload[length] = '\0';
+    String jsonStr = String((char *)payload);
+    parseJsonPayloadUpdateDateOfBirth(jsonStr);
   }
   if (strcmp(topic, topicName) == 0)
   {
-    String name = "";
-    for (int i = 0; i < length; i++)
-    {
-      name = name + (char)payload[i];
-    }
-    Serial.println(name);
-    updateName(name);
+    payload[length] = '\0';
+    String jsonStr = String((char *)payload);
+    parseJsonPayloadUpdateName(jsonStr);
+  }
+  if (strcmp(topic, topicClass) == 0)
+  {
+    payload[length] = '\0';
+    String jsonStr = String((char *)payload);
+    parseJsonPayloadUpdateClass(jsonStr);
+  }
+  if (strcmp(topic, topicMajor) == 0)
+  {
+    payload[length] = '\0';
+    String jsonStr = String((char *)payload);
+    parseJsonPayloadUpdateMajor(jsonStr);
   }
   if (strcmp(topic, topicImage) == 0)
   {
@@ -305,11 +392,6 @@ void callback(char *topic, byte *payload, unsigned int length)
     {
       name = name + (char)payload[i];
     }
-    Serial.println(length);
-    Serial.println(name);
-    payload[length] = '\0';
-    String jsonStr = String((char *)payload);
-    parseJsonPayload(jsonStr,length);
   }
   Serial.println();
   Serial.println("-----------------------");
@@ -354,6 +436,8 @@ void setup()
   client.subscribe(topicDateOfBirth);
   client.subscribe(topicName);
   client.subscribe(topicImage);
+  client.subscribe(topicMajor);
+  client.subscribe(topicClass);
   client.publish(topicGetDefaultData, "Dcm cuoc doi");
   Serial.println(client.getBufferSize());
   display.hibernate();

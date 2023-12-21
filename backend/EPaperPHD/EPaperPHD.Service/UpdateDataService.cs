@@ -48,16 +48,16 @@ namespace EPaperPHD.Service
             bool result = false;
             try
             {
-                logger.LogInformation("Start update Name");
-                IdentificationModel<EpaperPHDUpdateNameModel> response = new();
-                EpaperPHDUpdateNameModel model = new EpaperPHDUpdateNameModel()
+                logger.LogInformation("Start update Date Of Birth");
+                IdentificationModel<EpaperPHDUpdateDateOfBirthModel> response = new();
+                EpaperPHDUpdateDateOfBirthModel model = new EpaperPHDUpdateDateOfBirthModel()
                 {
-                    Name = queryModel.Name,
+                    DateOfBirth = queryModel.DateOfBirth,
                 };
-                IEnumerable<EpaperPHDUpdateNameModel> enumerableCollection = new List<EpaperPHDUpdateNameModel> { model };
+                IEnumerable<EpaperPHDUpdateDateOfBirthModel> enumerableCollection = new List<EpaperPHDUpdateDateOfBirthModel> { model };
                 response.IdDevice = queryModel.IdDevice;
                 response.Data = enumerableCollection;
-                result = await mqttServerService.PublishToMqttServer(response, "EpaperPHD/UpdateName");
+                result = await mqttServerService.PublishToMqttServer(response, "EpaperPHD/UpdateDateOfBirth");
             }
             catch (Exception ex)
             {
@@ -70,16 +70,16 @@ namespace EPaperPHD.Service
             bool result = false;
             try
             {
-                logger.LogInformation("Start update Name");
-                IdentificationModel<EpaperPHDUpdateNameModel> response = new();
-                EpaperPHDUpdateNameModel model = new EpaperPHDUpdateNameModel()
+                logger.LogInformation("Start update Major");
+                IdentificationModel<EpaperPHDUpdateMajorModel> response = new();
+                EpaperPHDUpdateMajorModel model = new EpaperPHDUpdateMajorModel()
                 {
-                    Name = queryModel.Name,
+                    Major = queryModel.Major,
                 };
-                IEnumerable<EpaperPHDUpdateNameModel> enumerableCollection = new List<EpaperPHDUpdateNameModel> { model };
+                IEnumerable<EpaperPHDUpdateMajorModel> enumerableCollection = new List<EpaperPHDUpdateMajorModel> { model };
                 response.IdDevice = queryModel.IdDevice;
                 response.Data = enumerableCollection;
-                result = await mqttServerService.PublishToMqttServer(response, "EpaperPHD/UpdateName");
+                result = await mqttServerService.PublishToMqttServer(response, "EpaperPHD/UpdateMajor");
             }
             catch (Exception ex)
             {
@@ -93,15 +93,41 @@ namespace EPaperPHD.Service
             try
             {
                 logger.LogInformation("Start update Name");
-                IdentificationModel<EpaperPHDUpdateNameModel> response = new();
-                EpaperPHDUpdateNameModel model = new EpaperPHDUpdateNameModel()
+                IdentificationModel<EpaperPHDUpdateClassModel> response = new();
+                EpaperPHDUpdateClassModel model = new EpaperPHDUpdateClassModel()
                 {
-                    Name = queryModel.Name,
+                    Class = queryModel.Class,
                 };
-                IEnumerable<EpaperPHDUpdateNameModel> enumerableCollection = new List<EpaperPHDUpdateNameModel> { model };
+                IEnumerable<EpaperPHDUpdateClassModel> enumerableCollection = new List<EpaperPHDUpdateClassModel> { model };
                 response.IdDevice = queryModel.IdDevice;
                 response.Data = enumerableCollection;
-                result = await mqttServerService.PublishToMqttServer(response, "EpaperPHD/UpdateName");
+                result = await mqttServerService.PublishToMqttServer(response, "EpaperPHD/UpdateClass");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.ToString());
+            }
+            return result;
+        }
+        public async Task<bool> UpdateImage(EpaperPHDUpdateImageQueryModel queryModel)
+        {
+            bool result = false;
+            try
+            {
+                logger.LogInformation("Start update Image");
+                IdentificationModel<EpaperPHDUpdateImageModel> response = new();
+                if(queryModel.Image == null || queryModel.Image.Length == 0)
+                {
+                    return false;
+                }
+                EpaperPHDUpdateImageModel model = new EpaperPHDUpdateImageModel()
+                {
+
+                };
+                IEnumerable<EpaperPHDUpdateImageModel> enumerableCollection = new List<EpaperPHDUpdateImageModel> { model };
+                response.IdDevice = queryModel.IdDevice;
+                response.Data = enumerableCollection;
+                result = await mqttServerService.PublishToMqttServer(response, "EpaperPHD/UpdateImage");
             }
             catch (Exception ex)
             {

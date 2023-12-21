@@ -53,7 +53,7 @@ namespace EPaperPHD.Controllers
 
                 rootFolder.Subfolders.Add(subfolder);
             }
-            var result = mqttServerService.PublishToMqttServer(UTF8Encoding.UTF8.GetBytes(DateTime.Now.ToString("yyyyMMdd")), "esp32/test/hello/vietnamhaha/dateofbirth", "broker.hivemq.com", 1883);
+            var result = mqttServerService.PublishToMqttServer(UTF8Encoding.UTF8.GetBytes(DateTime.Now.ToString("yyyyMMdd")), "esp32/test/hello/vietnamhaha/dateofbirth");
             // Trả về dữ liệu JSON
             return Ok(rootFolder);
         }

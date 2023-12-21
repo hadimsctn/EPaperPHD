@@ -13,5 +13,6 @@ namespace EPaperPHD.Service.Intention
         Task<bool> UpdateDateOfBirth(EpaperPHDUpdateDateOfBirthQueryModel queryModel);
         Task<bool> UpdateMajor(EpaperPHDUpdateMajorQueryModel queryModel);
         Task<bool> UpdateClass(EpaperPHDUpdateClassQueryModel queryModel);
+        Task<bool> UpdateImage(EpaperPHDUpdateImageQueryModel queryModel);
     }
 }
