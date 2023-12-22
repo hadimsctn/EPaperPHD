@@ -347,6 +347,26 @@ void parseJsonPayloadUpdateMajor(String jsonStr)
     }
   }
 }
+void parseJsonPayloadUpdateImage(String jsonStr){
+  DynamicJsonDocument doc(8192); // Kích thước đối tượng JSON tương ứng với payload
+
+  // Phân tích chuỗi JSON
+  deserializeJson(doc, jsonStr);
+
+  // Trích xuất giá trị từ các trường JSON
+  const char *idDevice = doc["IdDevice"];
+
+  // Xử lý dữ liệu
+  if (strcmp(idDevice, "string") == 0)
+  {
+    JsonArray data = doc["Data"];
+    for (JsonObject obj : data)
+    {
+      unsigned char *image = obj["Image"];
+      updateImage(image);
+    }
+  }
+}
 
 void callback(char *topic, byte *payload, unsigned int length)
 {
@@ -376,14 +396,19 @@ void callback(char *topic, byte *payload, unsigned int length)
     String jsonStr = String((char *)payload);
     parseJsonPayloadUpdateMajor(jsonStr);
   }
-  if (strcmp(topic, topicImage) == 0)
-  {
-    unsigned char image[length + 1];
-    for (int i = 0; i < length; i++)
-    {
-      image[i] = static_cast<unsigned char>(payload[i]);
-    }
-    updateImage(image);
+  // if (strcmp(topic, topicImage) == 0)
+  // {
+  //   unsigned char image[length + 1];
+  //   for (int i = 0; i < length; i++)
+  //   {
+  //     image[i] = static_cast<unsigned char>(payload[i]);
+  //   }
+  //   updateImage(image);
+  // }
+  if (strcmp(topic, topicImage) == 0){
+    payload[length] = '\0';
+    String jsonStr = String((char *)payload);
+    parseJsonPayloadUpdateImage(jsonStr);
   }
   if (strcmp(topic, topicGetDefaultData) == 0)
   {

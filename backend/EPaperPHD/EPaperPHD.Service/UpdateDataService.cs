@@ -3,6 +3,7 @@ using EPaperPHD.Model.EpaperPHDQueryModel;
 using EPaperPHD.Model.EpaperPHDUpdateDataModel;
 using EPaperPHD.Service.Intention;
 using EPaperPHD.Service.MqttServer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -120,9 +121,11 @@ namespace EPaperPHD.Service
                 {
                     return false;
                 }
+                if (queryModel.Image == null || queryModel.Image.Length == 0) return false;
+                var image = await ConvertImageToByte(queryModel.Image);
                 EpaperPHDUpdateImageModel model = new EpaperPHDUpdateImageModel()
                 {
-
+                    Image = image,
                 };
                 IEnumerable<EpaperPHDUpdateImageModel> enumerableCollection = new List<EpaperPHDUpdateImageModel> { model };
                 response.IdDevice = queryModel.IdDevice;
@@ -134,6 +137,19 @@ namespace EPaperPHD.Service
                 logger.LogError(ex.ToString());
             }
             return result;
+        }
+        private async Task<byte[]> ConvertImageToByte(IFormFile imageData)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                // Copy the contents of the uploaded file to the memory stream
+                imageData.CopyTo(memoryStream);
+
+                // Get the byte array from the memory stream
+                byte[] byteArray = memoryStream.ToArray();
+
+                return await Task.FromResult(byteArray);
+            }
         }
     }
 }
