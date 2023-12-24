@@ -29,9 +29,9 @@ namespace EPaperPHD.Web.Controllers
             return await mqttServerService.PublishToMqttServer(weatherForecast, "EpaperPHD/UpdateAll");
         }
         [HttpPost, Route("TestController/testData")]
-        public async Task<IdentificationModel<EpaperPHDDisplayModel>> PublishDataDefault()
+        public async Task<EpaperPHDDisplayModel> PublishDataDefault()
         {
-            IdentificationModel<EpaperPHDDisplayModel> Response = new();
+            EpaperPHDDisplayModel Response = new();
             EpaperPHDDisplayModel model = new EpaperPHDDisplayModel()
             {
                 DateOfBirth = "12/08/2002",
@@ -39,9 +39,6 @@ namespace EPaperPHD.Web.Controllers
                 Class = "Class",
                 Major = "dsd",
             };
-            IEnumerable<EpaperPHDDisplayModel> enumerableCollection = new List<EpaperPHDDisplayModel> { model };
-            Response.IdDevice = "adsdfsaf";
-            Response.Data = enumerableCollection;
             return Response;
         }
         [HttpPost, Route("TestController/testConvertImage")]

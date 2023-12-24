@@ -36,11 +36,38 @@ namespace EPaperPHD.Service.MqttServer
                 var connectResult = await client.ConnectAsync(options);
 
                 // Chuyển đối tượng thành JSON
-                var jsonData = JsonConvert.SerializeObject(data);
-
+                var jsonData = JsonConvert.SerializeObject(data);             
                 var applicationMessage = new MqttApplicationMessageBuilder()
                 .WithTopic(topic)
                 .WithPayload(Encoding.UTF8.GetBytes(jsonData))
+                .Build();
+                await client.PublishAsync(applicationMessage, CancellationToken.None);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.ToString());
+            }
+            return true;
+        }
+        public async Task<bool> PublishImageToMqttServer(byte[] image,object data, string topic)
+        {
+            try
+            {
+                logger.LogInformation("Start publish data to Mqtt Server");
+                var mqttFactory = new MqttFactory();
+                IMqttClient client = mqttFactory.CreateMqttClient();
+                var options = new MqttClientOptionsBuilder()
+                .WithClientId(Guid.NewGuid().ToString())
+                .WithTcpServer(mqttConfiguration.Broker, mqttConfiguration.Port)
+                    .WithCleanSession()
+                    .Build();
+                var connectResult = await client.ConnectAsync(options);
+                // Chuyển đối tượng thành JSON
+                var jsonData = JsonConvert.SerializeObject(data);
+                logger.LogInformation(image[862].ToString());
+                var applicationMessage = new MqttApplicationMessageBuilder()
+                .WithTopic(topic)
+                .WithPayload(Encoding.UTF8.GetBytes(jsonData).Concat(image))
                 .Build();
                 await client.PublishAsync(applicationMessage, CancellationToken.None);
             }

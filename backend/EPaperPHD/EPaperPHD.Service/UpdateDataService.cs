@@ -3,9 +3,12 @@ using EPaperPHD.Model.EpaperPHDQueryModel;
 using EPaperPHD.Model.EpaperPHDUpdateDataModel;
 using EPaperPHD.Service.Intention;
 using EPaperPHD.Service.MqttServer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,15 +30,12 @@ namespace EPaperPHD.Service
             try
             {
                 logger.LogInformation("Start update Name");
-                IdentificationModel<EpaperPHDUpdateNameModel> response = new();
                 EpaperPHDUpdateNameModel model = new EpaperPHDUpdateNameModel()
                 {
                     Name = queryModel.Name,
+                    IdDevice = queryModel.IdDevice,
                 };
-                IEnumerable<EpaperPHDUpdateNameModel> enumerableCollection = new List<EpaperPHDUpdateNameModel> { model };
-                response.IdDevice = queryModel.IdDevice;
-                response.Data = enumerableCollection;
-                result = await mqttServerService.PublishToMqttServer(response, "EpaperPHD/UpdateName");
+                result = await mqttServerService.PublishToMqttServer(model, "EpaperPHD/UpdateName");
             }
             catch(Exception ex)
             {
@@ -49,15 +49,12 @@ namespace EPaperPHD.Service
             try
             {
                 logger.LogInformation("Start update Date Of Birth");
-                IdentificationModel<EpaperPHDUpdateDateOfBirthModel> response = new();
                 EpaperPHDUpdateDateOfBirthModel model = new EpaperPHDUpdateDateOfBirthModel()
                 {
                     DateOfBirth = queryModel.DateOfBirth,
+                    IdDevice = queryModel.IdDevice
                 };
-                IEnumerable<EpaperPHDUpdateDateOfBirthModel> enumerableCollection = new List<EpaperPHDUpdateDateOfBirthModel> { model };
-                response.IdDevice = queryModel.IdDevice;
-                response.Data = enumerableCollection;
-                result = await mqttServerService.PublishToMqttServer(response, "EpaperPHD/UpdateDateOfBirth");
+                result = await mqttServerService.PublishToMqttServer(model, "EpaperPHD/UpdateDateOfBirth");
             }
             catch (Exception ex)
             {
@@ -71,15 +68,12 @@ namespace EPaperPHD.Service
             try
             {
                 logger.LogInformation("Start update Major");
-                IdentificationModel<EpaperPHDUpdateMajorModel> response = new();
                 EpaperPHDUpdateMajorModel model = new EpaperPHDUpdateMajorModel()
                 {
                     Major = queryModel.Major,
+                    IdDevice = queryModel.IdDevice
                 };
-                IEnumerable<EpaperPHDUpdateMajorModel> enumerableCollection = new List<EpaperPHDUpdateMajorModel> { model };
-                response.IdDevice = queryModel.IdDevice;
-                response.Data = enumerableCollection;
-                result = await mqttServerService.PublishToMqttServer(response, "EpaperPHD/UpdateMajor");
+                result = await mqttServerService.PublishToMqttServer(model, "EpaperPHD/UpdateMajor");
             }
             catch (Exception ex)
             {
@@ -93,15 +87,12 @@ namespace EPaperPHD.Service
             try
             {
                 logger.LogInformation("Start update Name");
-                IdentificationModel<EpaperPHDUpdateClassModel> response = new();
                 EpaperPHDUpdateClassModel model = new EpaperPHDUpdateClassModel()
                 {
                     Class = queryModel.Class,
+                    IdDevice = queryModel.IdDevice
                 };
-                IEnumerable<EpaperPHDUpdateClassModel> enumerableCollection = new List<EpaperPHDUpdateClassModel> { model };
-                response.IdDevice = queryModel.IdDevice;
-                response.Data = enumerableCollection;
-                result = await mqttServerService.PublishToMqttServer(response, "EpaperPHD/UpdateClass");
+                result = await mqttServerService.PublishToMqttServer(model, "EpaperPHD/UpdateClass");
             }
             catch (Exception ex)
             {
@@ -115,25 +106,56 @@ namespace EPaperPHD.Service
             try
             {
                 logger.LogInformation("Start update Image");
-                IdentificationModel<EpaperPHDUpdateImageModel> response = new();
                 if(queryModel.Image == null || queryModel.Image.Length == 0)
                 {
                     return false;
                 }
+                if (queryModel.Image == null || queryModel.Image.Length == 0) return false;
+                var image = await ImageToByteArrayAsync(queryModel.Image);
                 EpaperPHDUpdateImageModel model = new EpaperPHDUpdateImageModel()
                 {
-
+                    IdDevice = queryModel.IdDevice,
+                    ImageLength = image.Length,
                 };
-                IEnumerable<EpaperPHDUpdateImageModel> enumerableCollection = new List<EpaperPHDUpdateImageModel> { model };
-                response.IdDevice = queryModel.IdDevice;
-                response.Data = enumerableCollection;
-                result = await mqttServerService.PublishToMqttServer(response, "EpaperPHD/UpdateImage");
+                result = await mqttServerService.PublishImageToMqttServer(image,model, "EpaperPHD/UpdateImage");
             }
             catch (Exception ex)
             {
                 logger.LogError(ex.ToString());
             }
             return result;
+        }
+        private async Task<byte[]> ImageToByteArrayAsync(IFormFile imageFile)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                // Đọc dữ liệu từ IFormFile vào MemoryStream
+                await imageFile.CopyToAsync(memoryStream);
+
+                // Load hình ảnh từ MemoryStream bằng System.Drawing.Common
+                using (Bitmap bitmap = new Bitmap(memoryStream))
+                {
+                    int width = bitmap.Width;
+                    int height = bitmap.Height;
+
+                    int arraySize = width * height / 8;
+                    byte[] imageBytes = new byte[arraySize];
+                    int index = 0;
+                    for (int y = 0; y < height; y++)
+                    {
+                        for (int x = 0; x < width; x++)
+                        {
+                            Color pixel = bitmap.GetPixel(x, y);
+                            if (pixel.GetBrightness() > 0.5)
+                            {
+                                imageBytes[index / 8] |= (byte)(1 << (7 - (index % 8)));
+                            }
+                            index++;
+                        }
+                    }
+                    return imageBytes;
+                }
+            }
         }
     }
 }

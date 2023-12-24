@@ -9,6 +9,6 @@ namespace EPaperPHD.Model.EpaperPHDQueryModel
     public class EpaperPHDUpdateClassQueryModel
     {
         public string Class { get; set; } = string.Empty;
-        public string IdDevice { get; set; } = string.Empty;
+        public List<string> IdDevice { get; set; } = new List<string>();
     }
 }

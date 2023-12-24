@@ -9,6 +9,7 @@ namespace EPaperPHD.Model.EpaperPHDUpdateDataModel
 {
     public class EpaperPHDUpdateImageModel
     {
-        public byte[]? Image { get; set; }
+        public List<string> IdDevice { get; set; } = new List<string>();
+        public int ImageLength { get; set; }
     }
 }

@@ -9,6 +9,6 @@ namespace EPaperPHD.Model.EpaperPHDQueryModel
     public class EpaperPHDUpdateDateOfBirthQueryModel
     {
         public string DateOfBirth { get; set; } = string.Empty;
-        public string IdDevice { get; set; } = string.Empty;
+        public List<string> IdDevice { get; set; } = new List<string>();
     }
 }

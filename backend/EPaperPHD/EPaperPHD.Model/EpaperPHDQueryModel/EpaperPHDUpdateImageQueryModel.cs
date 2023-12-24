@@ -9,7 +9,7 @@ namespace EPaperPHD.Model.EpaperPHDQueryModel
 {
     public class EpaperPHDUpdateImageQueryModel
     {
-        public string IdDevice { get; set; } = string.Empty;
+        public List<string> IdDevice { get; set; } = new List<string>();
         public IFormFile? Image { get; set; }
     }
 }
