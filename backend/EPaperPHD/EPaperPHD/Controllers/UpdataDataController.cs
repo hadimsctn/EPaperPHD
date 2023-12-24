@@ -39,6 +39,7 @@ namespace EPaperPHD.Web.Controllers
         public async Task<bool> UpdateImage([FromForm] EpaperPHDUpdateImageQueryModel queryModel)
         {
             return await updateDataService.UpdateImage(queryModel);
+            return await updateDataService.UpdateImage(queryModel);
         }
     }
 }
