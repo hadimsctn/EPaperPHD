@@ -71,9 +71,9 @@
 GxEPD2_BW<GxEPD2_290_BS, GxEPD2_290_BS::HEIGHT> display(GxEPD2_290_BS(SS, DC, RST, BUSY)); // DEPG0290BS 128x296, SSD1680
 // GxEPD2_3C<GxEPD2_290_C90c, GxEPD2_290_C90c::HEIGHT> display(GxEPD2_290_C90c(/*CS=5*/ SS, /*DC=*/ 1, /*RST=*/ 2, /*BUSY=*/ 3)); // GDEM029C90 128x296, SSD1680
 
-const char *ssid = "Trangbeo";          // Enter your WiFi name
-const char *password = "ngocctrang99@"; // Enter WiFi password
-const char *mqtt_broker = "broker.hivemq.com";
+const char *ssid = "Bún đậu";          // Enter your WiFi name
+const char *password = "phaicomamtom"; // Enter WiFi password
+const char *mqtt_broker = "0.tcp.ap.ngrok.io";
 const char *topicGetDefaultData = "EpaperPHD/UpdateAll";
 const char *topicImage = "EpaperPHD/UpdateImage";
 const char *topicMajor = "EpaperPHD/UpdateMajor";
@@ -82,7 +82,7 @@ const char *topicName = "EpaperPHD/UpdateName";
 const char *topicDateOfBirth = "EpaperPHD/UpdateDateOfBirth";
 const char *mqtt_username = "emqx";
 const char *mqtt_password = "public";
-const int mqtt_port = 1883;
+const int mqtt_port = 17315;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
