@@ -29,6 +29,7 @@ namespace EPaperPHD.Service
                 var options = new MqttClientOptionsBuilder()
                     .WithClientId(Guid.NewGuid().ToString())
                     .WithTcpServer(mqttConfiguration.Broker, mqttConfiguration.Port)
+                    .WithCredentials("nguyenha", "12345678")
                     .WithCleanSession()
                     .Build();
                 var connectResult = await client.ConnectAsync(options);

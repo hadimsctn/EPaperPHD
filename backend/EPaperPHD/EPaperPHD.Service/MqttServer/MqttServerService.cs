@@ -31,6 +31,7 @@ namespace EPaperPHD.Service.MqttServer
                 var options = new MqttClientOptionsBuilder()
                 .WithClientId(Guid.NewGuid().ToString())
                 .WithTcpServer(mqttConfiguration.Broker, mqttConfiguration.Port)
+                .WithCredentials("nguyenha","12345678")
                     .WithCleanSession()
                     .Build();
                 var connectResult = await client.ConnectAsync(options);
@@ -59,12 +60,12 @@ namespace EPaperPHD.Service.MqttServer
                 var options = new MqttClientOptionsBuilder()
                 .WithClientId(Guid.NewGuid().ToString())
                 .WithTcpServer(mqttConfiguration.Broker, mqttConfiguration.Port)
+                .WithCredentials("nguyenha", "12345678")
                     .WithCleanSession()
                     .Build();
                 var connectResult = await client.ConnectAsync(options);
                 // Chuyển đối tượng thành JSON
                 var jsonData = JsonConvert.SerializeObject(data);
-                logger.LogInformation(image[862].ToString());
                 var applicationMessage = new MqttApplicationMessageBuilder()
                 .WithTopic(topic)
                 .WithPayload(Encoding.UTF8.GetBytes(jsonData).Concat(image))

@@ -80,9 +80,9 @@ const char *topicMajor = "EpaperPHD/UpdateMajor";
 const char *topicClass = "EpaperPHD/UpdateClass";
 const char *topicName = "EpaperPHD/UpdateName";
 const char *topicDateOfBirth = "EpaperPHD/UpdateDateOfBirth";
-const char *mqtt_username = "emqx";
-const char *mqtt_password = "public";
-const int mqtt_port = 17315;
+const char *mqtt_username = "nguyenha";
+const char *mqtt_password = "12345678";
+const int mqtt_port = 15354;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -329,7 +329,6 @@ void callback(char *topic, byte *payload, unsigned int length)
         unsigned char image[lengthImage];
         for (int i = 0; i < lengthImage; i++)
         {
-          Serial.println(payload[length-1-i]);
           image[lengthImage-1-i] = static_cast<unsigned char>(payload[length-1-i]);
         }
         updateImage(image);

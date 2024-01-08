@@ -4,7 +4,6 @@ using EPaperPHD.Model.EpaperPHDUpdateDataModel;
 using EPaperPHD.Service.Intention;
 using EPaperPHD.Service.MqttServer;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
