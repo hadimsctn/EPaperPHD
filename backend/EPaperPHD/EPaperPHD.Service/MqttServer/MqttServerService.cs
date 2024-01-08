@@ -31,7 +31,7 @@ namespace EPaperPHD.Service.MqttServer
                 var options = new MqttClientOptionsBuilder()
                 .WithClientId(Guid.NewGuid().ToString())
                 .WithTcpServer(mqttConfiguration.Broker, mqttConfiguration.Port)
-                .WithCredentials("nguyenha","12345678")
+                .WithCredentials(mqttConfiguration.Username, mqttConfiguration.Password)
                     .WithCleanSession()
                     .Build();
                 var connectResult = await client.ConnectAsync(options);
@@ -60,7 +60,7 @@ namespace EPaperPHD.Service.MqttServer
                 var options = new MqttClientOptionsBuilder()
                 .WithClientId(Guid.NewGuid().ToString())
                 .WithTcpServer(mqttConfiguration.Broker, mqttConfiguration.Port)
-                .WithCredentials("nguyenha", "12345678")
+                .WithCredentials(mqttConfiguration.Username, mqttConfiguration.Password)
                     .WithCleanSession()
                     .Build();
                 var connectResult = await client.ConnectAsync(options);
