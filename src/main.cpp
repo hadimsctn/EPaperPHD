@@ -26,7 +26,7 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
-#include <update.h>
+
 
 // #define ESP32_C3
 #define ESP32_C3_SUPERMINI
@@ -335,14 +335,6 @@ void callback(char *topic, byte *payload, unsigned int length)
         break; // Nếu đã tìm thấy giá trị "string", thoát khỏi vòng lặp
       }
     }
-    // unsigned char image[length + 1];
-    // for (int i = 0; i < length; i++)
-    // {
-    //   Serial.print(static_cast<unsigned char>(payload[i]));
-    //   Serial.print(",");
-    //   image[i] = static_cast<unsigned char>(payload[i]);
-    // }
-    // updateImage(image);
   }
   if (strcmp(topic, topicGetDefaultData) == 0)
   {
@@ -351,16 +343,6 @@ void callback(char *topic, byte *payload, unsigned int length)
     {
       name = name + (char)payload[i];
     }
-  }
-  if (strcmp(topic, "EpaperPHD/UpdateImage1") == 0)
-  {
-    unsigned char image[length + 1];
-    for (int i = 0; i < length; i++)
-    {
-      Serial.println(length);
-      image[i] = static_cast<unsigned char>(payload[i]);
-    }
-    updateImage(image);
   }
   Serial.println();
   Serial.println("-----------------------");
@@ -401,14 +383,13 @@ void setup()
       delay(2000);
     }
   }
+  client.publish(topicGetDefaultData, "string");
   client.subscribe(topicGetDefaultData);
   client.subscribe(topicDateOfBirth);
   client.subscribe(topicName);
   client.subscribe(topicImage);
   client.subscribe(topicMajor);
   client.subscribe(topicClass);
-  client.publish(topicGetDefaultData, "Dcm cuoc doi");
-  Serial.println(client.getBufferSize());
   display.hibernate();
 }
 
