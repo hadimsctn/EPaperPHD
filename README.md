@@ -11,5 +11,10 @@ Chi tiết tính năng
    - Kết nối MQTT local
    - Có thêm WebAPI để điều khiển MQTT Broker
 
+## Mã nguồn
+
+- backend/EPaperPHD: thư mục chứa backend, webapi để gửi dữ liêu tới MQTT. MQTT sẽ truyền nội dung với thiết bị IoT EPD
+
+
 ## Giới thiệu về tác giả
 Tác giả: Nguyễn Đức Hà
